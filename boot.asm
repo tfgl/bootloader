@@ -1,7 +1,10 @@
 [org 0x7c00]
 
+mov bp, 0x8
+mov sp, bp
+
 ; init cpt
-mov bx, 0
+mov bx, 4
 read:
     ; read
     mov ah, 0
@@ -11,29 +14,29 @@ read:
     mov ah, 0x0e
     int 0x10
 
-    ; save to buff
-    mov [buff + bx], al
+    ; push on the stack
+    push ax
 
     ; inc cpt, test for next iteration
-    inc bx
-    cmp bx, 16
+    dec bx
+    cmp bx, 0
     jne read
 
-
 mov ah, 0x0e
-mov bx, buff
-loop:
+mov bx, bp
+times 2 dec bl
+mov al, ' '
+int 0x10
+print:
+    ; print
     mov al, [bx]
     int 0x10
-    inc bx
+
+    times 2 dec bl
+
     cmp al, 0
-    jne loop
+    jne print
 
-str:
-    db "Hello wolrd", 0
-
-buff:
-    times 16 db 0, 0
 
 jmp $
 times 510-($-$$) db 0
