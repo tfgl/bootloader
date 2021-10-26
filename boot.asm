@@ -23,10 +23,11 @@ read:
     jne read
 
 mov ah, 0x0e
-mov bx, bp
-times 2 dec bl
 mov al, ' '
 int 0x10
+
+mov bx, bp
+times 2 dec bl
 print:
     ; print
     mov al, [bx]
